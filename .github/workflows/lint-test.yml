@@ -1,0 +1,28 @@
+name: Lint and Test                      # Name of the workflow
+
+on:
+  push:
+    branches: [master]                    # Trigger on push events to the main branch
+  pull_request:                        # Trigger on pull request events (any branch)
+
+jobs:
+  test:
+    runs-on: ubuntu-latest             # Use the latest Ubuntu runner environment
+
+    steps:
+      - name: Checkout code            # Step 1: Checkout your repository code
+        uses: actions/checkout@v4      # Uses official action to clone the repo
+
+      - name: Set up Python 3.11       # Step 2: Set up Python environment
+        uses: actions/setup-python@v4  # Uses official Python setup action
+        with:
+          python-version: '3.11'       # Specify the Python version to use
+
+      - name: Install dependencies     # Step 3: Install Python dependencies
+        run: pip install -r requirements.txt  # Installs packages from requirements.txt
+
+      - name: Lint code                # Step 4: Run linter on your codebase
+        run: pip install flake8 && flake8 .   # Installs flake8 and runs it on all files
+
+      - name: Run tests                # Step 5: Execute your test suite
+        run: pytest                   # Runs tests using pytest
